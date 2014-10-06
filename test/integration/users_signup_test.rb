@@ -14,6 +14,13 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   								 password_confirmation: "bar" }
   	end
   	assert_template 'users/new'
+  	assert_select 'div#error_explanation'
+  	assert_select 'div.alert' #, "The form contains 4 errors."
+  #	assert_select 'li', "Name can&#39;t be blank"
+  #	assert_select 'li', "Email is invalid"
+  #	assert_select 'li', "Password confirmation doesn&#39;t match Password"
+  #	assert_select 'li', "Password is too short (minimum is 6 characters)"
+  	assert_select 'div.field_with_errors'
   end
 
   test "valid signup information" do
@@ -28,5 +35,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   											  password_confirmation: password }
   	end
   	assert_template 'users/show'
+  	assert is_logged_in?
+  	assert_not flash.nil?
   end
 end
